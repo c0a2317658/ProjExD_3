@@ -141,12 +141,23 @@ class Bomb:
         screen.blit(self.img, self.rct)
 
 class Score:
-    self.fonto = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体", 30)
-    self.color= (0,0,255)
-    self.score  = 0
-    self.img = self.fonto.render("スコア：",0,self.color)
-    self.position = (100,500)
-    self.screen.blit(self.img, self.position)
+    def init(self,color,fonto,):
+        self.fonto = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体", 30)
+        self.color= (0,0,255)
+        self.score  = 0
+        self.img = self.font.render(f"スコア：{self.score}", True,self.color)
+        self.rct = self.img.get_rect()
+        self.rct.center = 100 ,HEIGHT -50
+
+
+    def update(self,screen):
+  
+        self.img = self.font.render(f"スコア：{self.score}", True,self.color)
+        screen.blit(self.img,self.rct)
+
+    def draw(self, screen):
+        # スクリーンにblit
+        screen.blit(self.img, (self.x, self.y))
 
 
 def main():
@@ -154,6 +165,7 @@ def main():
     screen = pg.display.set_mode((WIDTH, HEIGHT))    
     bg_img = pg.image.load("fig/pg_bg.jpg")
     bird = Bird((300, 200))
+    score = Score()
     beam = None
     # bomb = Bomb((255, 0, 0), 10)
     bombs = [Bomb((255, 0, 0), 10) for _ in range(NUM_OF_BOMBS)]
@@ -178,30 +190,20 @@ def main():
                 pg.display.update()
                 time.sleep(5)
                 return
-
+    
         for i in range(len(bombs)):
             if beam is not None:
                 if bombs[i].rct.colliderect(beam.rct):
                     bombs[i] = None
                     beam = None
                     bird.change_img(6, screen)
+                    score.score += 1
+                    score.update(screen)
         bombs = [bomb for bomb in bombs if bomb is not None]
 
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
-        if beam is not None:
-            beam.update(screen)
-        for bomb in bombs:
-            bomb.update(screen)
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                running = False
-            elif event.type == pg.KEYDOWN:
-                if event.key == pg.K_SPACE:
-                    # 爆弾を打ち落としたらスコアアップ（1点）
-                    core.score += 1
-
-        score.update()
+        score.update(screen)
         pg.display.update()
         tmr += 1
         clock.tick(50)
