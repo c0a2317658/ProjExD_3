@@ -140,6 +140,14 @@ class Bomb:
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)
 
+class Score:
+    self.fonto = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体", 30)
+    self.color= (0,0,255)
+    self.score  = 0
+    self.img = self.fonto.render("スコア：",0,self.color)
+    self.position = (100,500)
+    self.screen.blit(self.img, self.position)
+
 
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
@@ -185,6 +193,15 @@ def main():
             beam.update(screen)
         for bomb in bombs:
             bomb.update(screen)
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                running = False
+            elif event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    # 爆弾を打ち落としたらスコアアップ（1点）
+                    core.score += 1
+
+        score.update()
         pg.display.update()
         tmr += 1
         clock.tick(50)
