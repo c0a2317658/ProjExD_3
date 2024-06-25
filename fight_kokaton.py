@@ -141,6 +141,13 @@ class Bomb:
         screen.blit(self.img, self.rct)
 
 class Score:
+#     フォントの設定：self.fonto = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体", 30)
+# • 文字色の設定：青 → (0, 0, 255)
+# • スコアの初期値の設定：0
+# • 文字列Surfaceの生成：self.img = self.fonto.render(“表示させる文字列”
+# , 0, 色)
+# • 文字列の中心座標：画面左下(横座標：100，縦座標：画面下部から50)
+
     def init(self,color,fonto,):
         self.fonto = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体", 30)
         self.color= (0,0,255)
