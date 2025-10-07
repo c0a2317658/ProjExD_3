@@ -140,6 +140,33 @@ class Bomb:
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)
 
+class Score:
+    """
+    スコアに関するクラス
+    """
+    def __init__(self):
+        """ 
+        スコアを初期化し，フォントを設定する
+        引数: なし
+        """
+        self.font = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体", 30)
+        #文字の色
+        self.color = ( 0, 0, 255)
+        self.score = 0
+        self.value = 0  # 爆弾を倒したときのスコア加算値
+        self.img = self.font.render(f"スコア: {self.score}", 0, self.color)
+        self.rct = self.img.get_rect()
+        self.rct.center = (100, HEIGHT - 50)
+
+    def update(self, screen: pg.Surface):
+        """
+        スコアを画面に表示する
+        引数 screen：画面Surface
+        """
+        self.img = self.font.render(f"スコア: {self.score}", 0, self.color)
+        screen.blit(self.img, self.rct)
+
+    
 
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
@@ -147,7 +174,9 @@ def main():
     bg_img = pg.image.load("fig/pg_bg.jpg")
     bird = Bird((300, 200))
     bomb = Bomb((255, 0, 0), 10)
+
     bombs = list() # 爆弾を格納するリスト
+    score = Score() # Scoreクラスのインスタンス生成
     for _ in range(NUM_OF_BOMBS):
         bombs.append(Bomb((255, 0, 0), 10))
     
@@ -181,6 +210,7 @@ def main():
                     beam = None
                     bombs[b] = None
                     bird.change_img(6, screen) # こうかとん画像を切り替える
+                    score.score += 1 # スコアを加算する
         bombs = [bomb for bomb in bombs if bomb is not None] # Noneを除去する
         
         key_lst = pg.key.get_pressed()
@@ -189,6 +219,7 @@ def main():
             beam.update(screen)   
         for bomb in bombs: # 爆弾が存在する場合のみ，爆弾を更新する
             bomb.update(screen) 
+        score.update(screen) # スコアを更新する
         pg.display.update()
         tmr += 1
         clock.tick(50)
