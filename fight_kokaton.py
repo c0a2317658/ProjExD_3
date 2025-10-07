@@ -254,6 +254,7 @@ def main():
                     # bombとbeamが衝突したらExplosionインスタンスを生成，リストにappend
                     expl = Explosion(bomb.rct.center)
                     explosion.append(expl)
+                    score.score += 1  # スコアを加算
                     bird.change_img(6, screen) # こうかとん画像を切り替える
         bombs = [bomb for bomb in bombs if bomb is not None] # Noneを除去する
         beams = [beam for beam in beams if beam is not None and check_bound(beam.rct) == (True, True)] # Noneを除去する
