@@ -56,8 +56,7 @@ class Bird:
         self.img = __class__.imgs[(+5, 0)]
         self.rct: pg.Rect = self.img.get_rect()
         self.rct.center = xy
-        1#こうかとんの向きを表すタプルself.dire=(+5,0)を定義
-        self.dire = (+5, 0)
+        self.dire = (+5, 0)  # こうかとんの向きを表すタプルself.dire=(+5,0)を定義
 
     def change_img(self, num: int, screen: pg.Surface):
         """
@@ -85,8 +84,7 @@ class Bird:
         if not (sum_mv[0] == 0 and sum_mv[1] == 0):
             self.img = __class__.imgs[tuple(sum_mv)]
         screen.blit(self.img, self.rct)
-        #合計移動量sum_mvが[0,0]でない時，self.direをsum_mvの値で更新
-        if not (sum_mv[0] == 0 and sum_mv[1] == 0):
+        if not (sum_mv[0] == 0 and sum_mv[1] == 0):  # 合計移動量sum_mvが[0,0]でない時，self.direをsum_mvの値で更新
             self.dire = tuple(sum_mv)
 
 class Beam:
@@ -102,14 +100,10 @@ class Beam:
         self.rct = self.img.get_rect()
         #Birdのdireにアクセスし，こうかとんが向いている方向をvx, vyに代入
         self.vx, self.vy = bird.dire
-        # ビームの中心横座標＝こうかとんの中心横座標＋こうかとんの横幅 ビームの横速度÷５
-        self.rct.centery = bird.rct.centery + bird.rct.height * self.vy // 5
-         # ビームの中心縦座標＝こうかとんの中心縦座標＋こうかとんの高さ ビームの縦速度÷５
-        self.rct.centerx = bird.rct.centerx + bird.rct.width * self.vy // 5
-        #math.atan2(-vy, vx)で，直交座標(x, -y)から極座標の角度Θに変換
-        #math.degrees(Θ)で弧度法から度数法に変換し，rotozoomで回転
-        self.img = pg.transform.rotozoom(self.img, -1*math.degrees(math.atan2(-self.vy, self.vx)), 1.0)
-        self.rct = self.img.get_rect(center=self.rct.center) # 画像回転に伴い，Rectも更新
+        self.rct.centery = bird.rct.centery + bird.rct.height * self.vy // 5  # ビームの中心横座標＝こうかとんの中心横座標＋こうかとんの横幅 ビームの横速度÷５
+        self.rct.centerx = bird.rct.centerx + bird.rct.width * self.vy // 5  # ビームの中心縦座標＝こうかとんの中心縦座標＋こうかとんの高さ ビームの縦速度÷５
+        self.img = pg.transform.rotozoom(self.img, -1*math.degrees(math.atan2(-self.vy, self.vx)), 1.0)  # math.atan2(-vy, vx)で，直交座標(x, -y)から極座標の角度Θに変換
+        self.rct = self.img.get_rect(center=self.rct.center)  # 画像回転に伴い，Rectも更新
 
         
     def update(self, screen: pg.Surface):
@@ -162,8 +156,7 @@ class Score:
         引数: なし
         """
         self.font = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体", 30)
-        #文字の色
-        self.color = ( 0, 0, 255)
+        self.color = ( 0, 0, 255)  # 文字の青色
         self.score = 0
         self.value = 0  # 爆弾を倒したときのスコア加算値
         self.img = self.font.render(f"スコア: {self.score}", 0, self.color)
